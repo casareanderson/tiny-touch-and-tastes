@@ -29,15 +29,21 @@ export const site = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Images. Placeholder SVGs live in /public/images so the site looks complete
-// today. Drop your real photos into public/images/ and update the paths here.
+// Images. Real photos are in /public/images. Replace placeholders as they
+// become available — see README for guidance.
 // ---------------------------------------------------------------------------
 export const images = {
-  hero: withBase("/images/hero.svg"),
+  logo: withBase("/images/tiny-touch-and-tastes-logo.jpg"),
+  hero: withBase("/images/weaning-baby.jpg"),
   founder: withBase("/images/founder-demi.svg"),
   babyMassage: withBase("/images/baby-massage.svg"),
-  weaning: withBase("/images/weaning-workshop.svg"),
-} as const;
+  weaning: withBase("/images/weaning-baby.jpg"),
+  weaningGallery: [
+    withBase("/images/weaning-first-foods.jpg"),
+    withBase("/images/weaning-family-meal.jpg"),
+    withBase("/images/weaning-batch-cooking.jpg"),
+  ],
+};
 
 // ---------------------------------------------------------------------------
 // Courses & pricing.

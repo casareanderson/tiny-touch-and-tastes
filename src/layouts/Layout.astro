@@ -1,5 +1,5 @@
 ---
-import { site } from "../config";
+import { site, images } from "../config";
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -15,7 +15,6 @@ const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site
 const metaDescription =
   description ??
   "Baby massage and weaning workshops for new parents. Gentle, evidence-based classes in a warm, non-judgmental space.";
-const ogImage = `${site.url}${withBase("/images/hero.svg")}`;
 ---
 <!doctype html>
 <html lang="en-GB">
@@ -24,13 +23,13 @@ const ogImage = `${site.url}${withBase("/images/hero.svg")}`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{pageTitle}</title>
     <meta name="description" content={metaDescription} />
-    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" type="image/png" href={withBase("/favicon.png")} />
 
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={site.url} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={`${site.url}${images.logo}`} />
     <meta name="theme-color" content="#82935f" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

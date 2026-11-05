@@ -47,20 +47,31 @@ Most business details are in `src/config.ts`:
 
 Page-specific wording is in `src/pages/`. Colours, fonts and shared styles are in `src/styles/global.css`.
 
-## Add Demi's photos
+## Add photos
 
 Place the real photos in `public/images/`, then update the `images` object near the top of `src/config.ts`.
 
-Current placeholders:
+Real images now in use:
+
+| Setting | File | Where it appears |
+| --- | --- | --- |
+| `logo` | `tiny-touch-and-tastes-logo.jpg` | Header logo, footer brand, OG social image, favicon |
+| `hero` | `weaning-baby.jpg` | Layout default OG image fallback |
+| `weaning` | `weaning-baby.jpg` | Weaning Workshop page hero & homepage weaning card |
+| `weaningGallery[0]` | `weaning-first-foods.jpg` | Weaning Workshop photo gallery |
+| `weaningGallery[1]` | `weaning-family-meal.jpg` | Weaning Workshop photo gallery |
+| `weaningGallery[2]` | `weaning-batch-cooking.jpg` | Weaning Workshop photo gallery |
+
+Placeholders remaining:
 
 | Setting | Placeholder | Suggested photo |
 | --- | --- | --- |
-| `hero` | `hero.svg` | Warm parent-and-baby or class photo, landscape |
 | `founder` | `founder-demi.svg` | Portrait of Demi, portrait orientation |
 | `babyMassage` | `baby-massage.svg` | Baby massage class, landscape |
-| `weaning` | `weaning-workshop.svg` | First foods or weaning photo, landscape |
 
-JPG, PNG, WebP and AVIF files are fine. Keep the SVG placeholders until the replacements are ready. The images in `/ZimaOS-HD/Demi` were not accessible from this machine, so they have **not** been copied into the project.
+JPG, PNG, WebP and AVIF files are fine. Keep the SVG placeholders until the replacements are ready.
+
+The Zima-staged photos have been copied to `public/images/` and wired into the site. Only the five approved files (1 logo + 4 weaning images) were deployed; the remaining staged photos were not included.
 
 ## Waiting list and contact forms
 
