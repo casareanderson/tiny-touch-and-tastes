@@ -70,8 +70,10 @@ const isActive = (href: string) => currentPath === normalise(withBase(href));
     position: sticky;
     top: 0;
     z-index: 50;
+    background: rgba(253, 249, 241, 0.9);
     background: color-mix(in srgb, var(--ivory) 88%, transparent);
     backdrop-filter: saturate(1.2) blur(12px);
+    -webkit-backdrop-filter: saturate(1.2) blur(12px);
     border-bottom: 1px solid rgba(106, 122, 77, 0.12);
   }
   .header-inner {

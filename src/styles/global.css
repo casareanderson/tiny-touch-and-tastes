@@ -82,6 +82,11 @@ body {
   line-height: 1.65;
   font-size: 1.0625rem;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+@supports (overflow-x: clip) {
+  body { overflow-x: clip; }
 }
 
 h1, h2, h3, h4 {
