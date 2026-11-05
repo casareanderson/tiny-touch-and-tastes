@@ -1,0 +1,653 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { babyMassage, weaningWorkshop } from "../config";
+import { withBase } from "../lib/paths";
+
+const classes = [
+  {
+    id: "baby-massage",
+    name: babyMassage.name,
+    price: babyMassage.price,
+    note: "4-week block · ~90 min per class",
+  },
+  {
+    id: "weaning",
+    name: weaningWorkshop.name,
+    price: weaningWorkshop.price,
+    note: "Online · single session",
+  },
+  {
+    id: "free-taster",
+    name: "Free Baby Massage Taster",
+    price: "Free",
+    note: "A gentle introduction as part of Demi's training",
+  },
+];
+---
+
+<Layout
+  title="Book a Class"
+  description="Book a baby massage course, online weaning workshop or free baby massage taster with Tiny Touch & Tastes."
+>
+  <section class="page-hero">
+    <div class="container page-head">
+      <span class="eyebrow">Book a class</span>
+      <h1>Find a time that works for you.</h1>
+      <p class="lead">
+        Choose your class, pick a date from the calendar, then add your details.
+      </p>
+      <p class="waitlist-link">
+        Not ready to book? <a href={`${withBase("/")}#waitlist`}>Join the waiting list instead</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="booking-section">
+    <div class="container">
+      <div class="demo-banner">
+        <strong>Demo booking</strong>
+        <span>Example dates and times only — no booking or payment is sent.</span>
+      </div>
+
+      <div class="booking-widget" id="booking-widget">
+        <div class="steps" aria-label="Booking progress">
+          <span class="step active" data-step="1"><b>1</b> Class</span>
+          <span class="step-line" aria-hidden="true"></span>
+          <span class="step" data-step="2"><b>2</b> Date &amp; time</span>
+          <span class="step-line" aria-hidden="true"></span>
+          <span class="step" data-step="3"><b>3</b> Details</span>
+        </div>
+
+        <div class="pane" data-pane="1">
+          <div class="pane-heading">
+            <h2>What would you like to book?</h2>
+            <p>Choose a course, workshop or free taster.</p>
+          </div>
+          <div class="class-options">
+            {classes.map((c) => (
+              <button
+                class:list={["class-option", { free: c.id === "free-taster" }]}
+                type="button"
+                data-id={c.id}
+              >
+                <span class="class-name">{c.name}</span>
+                <span class="class-note">{c.note}</span>
+                <span class="class-price">{c.price}</span>
+                <span class="class-select">Choose <span aria-hidden="true">→</span></span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="pane" data-pane="2" hidden>
+          <div class="pane-heading">
+            <h2>Choose a date and time</h2>
+            <p class="form-note" id="slot-summary"></p>
+          </div>
+
+          <div class="calendar-layout">
+            <div class="calendar" aria-label="Choose a date">
+              <div class="calendar-header">
+                <button class="month-button" id="previous-month" type="button" aria-label="Previous month">←</button>
+                <h3 id="calendar-month" aria-live="polite"></h3>
+                <button class="month-button" id="next-month" type="button" aria-label="Next month">→</button>
+              </div>
+              <div class="calendar-weekdays" aria-hidden="true">
+                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span>
+                <span>Fri</span><span>Sat</span><span>Sun</span>
+              </div>
+              <div class="calendar-days" id="calendar-days"></div>
+              <p class="calendar-key"><span></span> Example available date</p>
+            </div>
+
+            <div class="time-panel">
+              <h3 id="time-heading">Available times</h3>
+              <p id="time-date" class="form-note">Select a highlighted date.</p>
+              <div class="time-list" id="time-list"></div>
+            </div>
+          </div>
+
+          <div class="pane-actions">
+            <button class="btn btn-outline" type="button" data-back>Back to classes</button>
+          </div>
+        </div>
+
+        <div class="pane" data-pane="3" hidden>
+          <div class="pane-heading">
+            <h2>Your details</h2>
+            <p>One last step — check your class and add your details.</p>
+          </div>
+          <div class="details-layout">
+            <div>
+              <div class="field">
+                <label for="bk-name">Your name</label>
+                <input id="bk-name" name="name" type="text" autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="bk-email">Email address</label>
+                <input id="bk-email" name="email" type="email" autocomplete="email" />
+              </div>
+            </div>
+            <div class="summary" id="booking-summary"></div>
+          </div>
+          <button class="btn btn-primary btn-lg" type="button" id="pay-btn">
+            Continue to payment
+          </button>
+          <p class="form-note" id="pay-note"></p>
+          <div class="pane-actions">
+            <button class="btn btn-outline" type="button" data-back>Back to calendar</button>
+          </div>
+        </div>
+
+        <div class="pane confirmation" data-pane="4" hidden>
+          <span class="confirmation-mark" aria-hidden="true">✓</span>
+          <h2 id="confirmation-title">Class selected</h2>
+          <p id="confirmation-text"></p>
+          <div class="summary" id="confirmation-summary"></div>
+          <button class="btn btn-outline" type="button" id="restart-booking">Choose another class</button>
+        </div>
+
+        <p class="demo-note" id="demo-note" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  .page-hero {
+    padding-block: clamp(2.5rem, 5vw, 4rem) 2rem;
+    background:
+      radial-gradient(50% 70% at 90% 0%, var(--sage-100) 0%, transparent 65%),
+      radial-gradient(45% 60% at 0% 100%, var(--gold-100) 0%, transparent 65%);
+  }
+  .page-head { max-width: none; }
+  .page-head h1 { max-width: 16ch; }
+  .page-head .lead { max-width: 42rem; }
+  .waitlist-link { font-size: 0.95rem; margin: 0; }
+
+  .booking-section { padding-block: 1rem clamp(3rem, 7vw, 5rem); }
+  .demo-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 960px;
+    margin: 0 auto 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius);
+    background: var(--gold-100);
+    color: var(--sage-800);
+    font-size: 0.9rem;
+  }
+  .demo-banner strong {
+    background: var(--gold-300);
+    border-radius: var(--radius-pill);
+    padding: 0.2rem 0.65rem;
+    white-space: nowrap;
+  }
+
+  .booking-widget {
+    max-width: 960px;
+    margin-inline: auto;
+    background: var(--bg-soft);
+    border: 1px solid rgba(106, 122, 77, 0.14);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 50px rgba(65, 76, 49, 0.1);
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+  }
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2.25rem;
+  }
+  .step {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .step b {
+    display: grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 50%;
+    background: var(--sage-100);
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .step.active { color: var(--primary-strong); }
+  .step.active b { background: var(--primary); color: #fff; }
+  .step-line { width: 2.5rem; height: 1px; background: var(--sage-200); }
+
+  .pane:not([hidden]) { animation: pane-in 0.25s ease both; }
+  .pane-heading { margin-bottom: 1.5rem; }
+  .pane-heading h2 { margin-bottom: 0.35rem; }
+  .pane-heading p { margin: 0; color: var(--text-muted); }
+  @keyframes pane-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .class-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .class-option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    background: #fff;
+    border: 2px solid var(--sage-200);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .class-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+  }
+  .class-option.selected { border-color: var(--primary); box-shadow: 0 0 0 3px var(--sage-100); }
+  .class-option.free { background: linear-gradient(145deg, #fff 30%, var(--coral-50)); border-color: var(--coral-200); }
+  .class-name { font-weight: 800; font-size: 1.1rem; color: var(--ink); margin-bottom: 0.45rem; }
+  .class-note { font-size: 0.88rem; color: var(--text-muted); min-height: 2.8em; }
+  .class-price {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 600;
+    color: var(--primary-strong);
+    margin-block: 1rem;
+  }
+  .free .class-price { color: var(--coral-600); }
+  .class-select { display: inline-flex; gap: 0.35rem; font-weight: 800; font-size: 0.88rem; color: var(--primary-strong); }
+  .class-option:hover .class-select span { transform: translateX(3px); }
+  .class-select span { transition: transform 0.2s ease; }
+
+  .calendar-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(13rem, 0.65fr);
+    gap: 1.25rem;
+  }
+  .calendar {
+    background: #fff;
+    border: 1px solid var(--sage-100);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  .calendar-header h3 { margin: 0; font-size: 1.2rem; }
+  .month-button {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--sage-200);
+    border-radius: 50%;
+    background: var(--ivory-soft);
+    color: var(--primary-strong);
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .month-button:hover:not(:disabled) { background: var(--sage-100); border-color: var(--primary); }
+  .month-button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .calendar-weekdays, .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.35rem;
+  }
+  .calendar-weekdays { margin-bottom: 0.4rem; }
+  .calendar-weekdays span { text-align: center; font-size: 0.72rem; font-weight: 800; color: var(--text-muted); }
+  .calendar-day {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 2.5rem;
+    min-width: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+  }
+  button.calendar-day {
+    appearance: none;
+    cursor: pointer;
+    color: var(--ink);
+    font-weight: 800;
+    background: var(--sage-100);
+    border: 1px solid var(--sage-200);
+  }
+  button.calendar-day:hover { background: var(--sage-200); }
+  button.calendar-day:focus-visible { outline: 2px solid var(--coral-400); outline-offset: 2px; }
+  button.calendar-day::after {
+    content: "";
+    position: absolute;
+    bottom: 8%;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--coral-400);
+  }
+  button.calendar-day.selected { background: var(--primary); color: #fff; }
+  button.calendar-day.selected::after { background: var(--gold-300); }
+  .calendar-day.empty { height: 2.5rem; }
+  .calendar-key { display: flex; align-items: center; gap: 0.4rem; margin: 0.9rem 0 0; font-size: 0.75rem; color: var(--text-muted); }
+  .calendar-key span { width: 5px; height: 5px; border-radius: 50%; background: var(--coral-400); }
+
+  .time-panel {
+    background: var(--sage-50);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+  .time-panel h3 { font-size: 1.1rem; margin-bottom: 0.35rem; }
+  .time-list { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1rem; }
+  .time-button {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 2px solid var(--sage-200);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--primary-strong);
+    font-family: var(--font-body);
+    font-weight: 800;
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .time-button:hover { border-color: var(--primary); transform: translateY(-2px); }
+
+  .pane-actions { margin-top: 1.5rem; }
+  .details-layout { display: grid; grid-template-columns: 1fr 0.8fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .summary {
+    background: var(--primary-soft);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+  .summary strong { display: block; color: var(--ink); font-size: 1.05rem; margin-bottom: 0.35rem; }
+  .summary .summary-price { display: block; color: var(--primary-strong); font-weight: 800; margin-top: 0.65rem; }
+  #pay-note { margin-top: 0.75rem; max-width: 36rem; }
+  .demo-note { margin: 0.75rem 0 0; font-weight: 700; color: var(--coral-600); font-size: 0.9rem; }
+
+  .confirmation { text-align: center; max-width: 34rem; margin-inline: auto; padding-block: 1rem; }
+  .confirmation-mark {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    background: var(--sage-100);
+    color: var(--primary-strong);
+    font-size: 2rem;
+    font-weight: 800;
+  }
+  .confirmation .summary { margin-block: 1.5rem; text-align: left; }
+
+  @media (max-width: 760px) {
+    .class-options, .calendar-layout, .details-layout { grid-template-columns: 1fr; }
+    .class-note { min-height: 0; }
+    .step-line { width: 1rem; }
+    .step { font-size: 0.75rem; }
+    .calendar { padding: 0.85rem; }
+    .time-list { flex-direction: row; flex-wrap: wrap; }
+    .time-button { width: auto; flex: 1; min-width: 6rem; }
+  }
+  @media (max-width: 480px) {
+    .steps { gap: 0.4rem; }
+    .step-line { display: none; }
+    .step { flex-direction: column; gap: 0.25rem; }
+    .demo-banner { align-items: flex-start; flex-direction: column; gap: 0.4rem; }
+    .calendar-weekdays span { font-size: 0.65rem; }
+  }
+</style>
+
+<script>
+  interface ClassOption {
+    name: string;
+    price: string;
+    note: string;
+    times: string[];
+    weekdays: number[];
+    free?: boolean;
+  }
+
+  const classData: Record<string, ClassOption> = {
+    "baby-massage": {
+      name: "Baby Massage",
+      price: "£60",
+      note: "4-week block · ~90 min per class",
+      times: ["10:00", "13:00"],
+      weekdays: [2, 4],
+    },
+    "weaning": {
+      name: "Weaning Workshop",
+      price: "£25",
+      note: "Online · single session",
+      times: ["18:30", "20:00"],
+      weekdays: [3],
+    },
+    "free-taster": {
+      name: "Free Baby Massage Taster",
+      price: "Free",
+      note: "A gentle introduction as part of Demi's training",
+      times: ["10:00", "12:00"],
+      weekdays: [5],
+      free: true,
+    },
+  };
+
+  const widget = document.getElementById("booking-widget")!;
+  const panes = widget.querySelectorAll<HTMLElement>("[data-pane]");
+  const steps = widget.querySelectorAll<HTMLElement>(".step");
+  const demoNote = widget.querySelector<HTMLElement>("#demo-note")!;
+  const calendarDays = widget.querySelector<HTMLElement>("#calendar-days")!;
+  const calendarMonth = widget.querySelector<HTMLElement>("#calendar-month")!;
+  const previousMonth = widget.querySelector<HTMLButtonElement>("#previous-month")!;
+  const nextMonth = widget.querySelector<HTMLButtonElement>("#next-month")!;
+  const timeList = widget.querySelector<HTMLElement>("#time-list")!;
+  const timeDate = widget.querySelector<HTMLElement>("#time-date")!;
+
+  const minDate = new Date();
+  minDate.setHours(0, 0, 0, 0);
+  minDate.setDate(minDate.getDate() + 7);
+  const maxDate = new Date(minDate);
+  maxDate.setDate(maxDate.getDate() + 90);
+  const minMonth = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+  const maxMonth = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+
+  let viewMonth = new Date(minMonth);
+  let selectedClass: string | null = null;
+  let selectedDate: Date | null = null;
+  let selectedTime: string | null = null;
+
+  const sameMonth = (a: Date, b: Date) =>
+    a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+  const sameDate = (a: Date, b: Date) =>
+    sameMonth(a, b) && a.getDate() === b.getDate();
+  const longDate = (date: Date) =>
+    date.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
+
+  function showPane(n: number) {
+    panes.forEach((pane) => (pane.hidden = pane.dataset.pane !== String(n)));
+    steps.forEach((step) =>
+      step.classList.toggle("active", Number(step.dataset.step) === Math.min(n, 3))
+    );
+    demoNote.textContent = "";
+  }
+
+  function selectClass(id: string) {
+    if (!classData[id]) return;
+    selectedClass = id;
+    selectedDate = null;
+    selectedTime = null;
+    viewMonth = new Date(minMonth);
+    widget.querySelectorAll(".class-option").forEach((option) =>
+      option.classList.toggle("selected", (option as HTMLElement).dataset.id === id)
+    );
+    const cls = classData[id];
+    widget.querySelector<HTMLElement>("#slot-summary")!.textContent = `${cls.name} — ${cls.note}`;
+    renderCalendar();
+    renderTimes();
+    showPane(2);
+  }
+
+  function renderCalendar() {
+    if (!selectedClass) return;
+    const cls = classData[selectedClass];
+    const year = viewMonth.getFullYear();
+    const month = viewMonth.getMonth();
+    calendarMonth.textContent = viewMonth.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+    previousMonth.disabled = sameMonth(viewMonth, minMonth);
+    nextMonth.disabled = sameMonth(viewMonth, maxMonth);
+    calendarDays.replaceChildren();
+
+    const leadingBlanks = (new Date(year, month, 1).getDay() + 6) % 7;
+    for (let i = 0; i < leadingBlanks; i++) {
+      const blank = document.createElement("span");
+      blank.className = "calendar-day empty";
+      blank.setAttribute("aria-hidden", "true");
+      calendarDays.appendChild(blank);
+    }
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const available = date >= minDate && date <= maxDate && cls.weekdays.includes(date.getDay());
+      const cell = document.createElement(available ? "button" : "span");
+      cell.className = "calendar-day";
+      cell.textContent = String(day);
+      cell.setAttribute("aria-label", date.toLocaleDateString("en-GB", { day: "numeric", month: "long" }));
+      if (available) {
+        const button = cell as HTMLButtonElement;
+        button.type = "button";
+        button.classList.toggle("selected", selectedDate !== null && sameDate(date, selectedDate));
+        button.setAttribute(
+          "aria-label",
+          `${longDate(date)}${selectedDate && sameDate(date, selectedDate) ? ", selected" : ""}`
+        );
+        button.addEventListener("click", () => {
+          selectedDate = date;
+          selectedTime = null;
+          renderCalendar();
+          renderTimes();
+        });
+      } else {
+        cell.setAttribute("aria-disabled", "true");
+      }
+      calendarDays.appendChild(cell);
+    }
+  }
+
+  function renderTimes() {
+    if (!selectedClass) return;
+    timeList.replaceChildren();
+    if (!selectedDate) {
+      timeDate.textContent = "Select a highlighted date.";
+      return;
+    }
+    timeDate.textContent = longDate(selectedDate);
+    classData[selectedClass].times.forEach((time) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "time-button";
+      button.textContent = time;
+      button.setAttribute("aria-label", `Choose ${time} on ${longDate(selectedDate!)}`);
+      button.addEventListener("click", () => {
+        selectedTime = time;
+        renderSummary();
+        showPane(3);
+      });
+      timeList.appendChild(button);
+    });
+  }
+
+  function summaryMarkup() {
+    const cls = classData[selectedClass!];
+    return `<strong>${cls.name}</strong>${longDate(selectedDate!)} at ${selectedTime}<span class="summary-price">${cls.price}</span>`;
+  }
+
+  function renderSummary() {
+    if (!selectedClass || !selectedDate || !selectedTime) return;
+    const cls = classData[selectedClass];
+    widget.querySelector<HTMLElement>("#booking-summary")!.innerHTML = summaryMarkup();
+    const payButton = widget.querySelector<HTMLButtonElement>("#pay-btn")!;
+    payButton.textContent = cls.free ? "Reserve free taster" : "Continue to payment";
+    widget.querySelector<HTMLElement>("#pay-note")!.textContent = cls.free
+      ? "No payment is needed for a free taster."
+      : "The live booking system will use GoCardless for secure payment.";
+  }
+
+  widget.querySelectorAll<HTMLElement>(".class-option").forEach((button) => {
+    button.addEventListener("click", () => selectClass(button.dataset.id!));
+  });
+
+  widget.querySelectorAll<HTMLElement>("[data-back]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const current = Number([...panes].find((pane) => !pane.hidden)?.dataset.pane);
+      showPane(Math.max(1, current - 1));
+    });
+  });
+
+  previousMonth.addEventListener("click", () => {
+    viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1);
+    renderCalendar();
+  });
+  nextMonth.addEventListener("click", () => {
+    viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1);
+    renderCalendar();
+  });
+
+  widget.querySelector<HTMLElement>("#pay-btn")!.addEventListener("click", () => {
+    const name = widget.querySelector<HTMLInputElement>("#bk-name")!.value.trim();
+    const email = widget.querySelector<HTMLInputElement>("#bk-email")!.value.trim();
+    if (!name || !email) {
+      demoNote.textContent = "Please add your name and email first.";
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      demoNote.textContent = "Please enter a valid email address.";
+      return;
+    }
+    const cls = classData[selectedClass!];
+    widget.querySelector<HTMLElement>("#confirmation-title")!.textContent = cls.free
+      ? "Your free taster is selected"
+      : "Your class is selected";
+    widget.querySelector<HTMLElement>("#confirmation-text")!.textContent =
+      `Thanks, ${name}. This is a demo, so nothing has been booked or sent. The live version will confirm your place by email.`;
+    widget.querySelector<HTMLElement>("#confirmation-summary")!.innerHTML = summaryMarkup();
+    showPane(4);
+  });
+
+  widget.querySelector<HTMLElement>("#restart-booking")!.addEventListener("click", () => {
+    selectedClass = null;
+    selectedDate = null;
+    selectedTime = null;
+    widget.querySelectorAll(".class-option").forEach((option) => option.classList.remove("selected"));
+    widget.querySelector<HTMLInputElement>("#bk-name")!.value = "";
+    widget.querySelector<HTMLInputElement>("#bk-email")!.value = "";
+    showPane(1);
+  });
+
+  const requestedClass = new URLSearchParams(window.location.search).get("class");
+  if (requestedClass && classData[requestedClass]) {
+    selectClass(requestedClass);
+  }
+</script>

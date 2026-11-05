@@ -1,0 +1,79 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactForm.astro";
+import { site } from "../config";
+---
+
+<Layout
+  title="Contact"
+  description="Get in touch with Tiny Touch & Tastes — questions about baby massage, weaning workshops, or free taster classes."
+>
+  <section class="page-hero">
+    <div class="container contact-grid">
+      <div class="contact-info">
+        <span class="eyebrow">Contact</span>
+        <h1>Say hello.</h1>
+        <p class="lead">
+          Got a question about a class, or want to chat about whether it's right
+          for you and your baby? I'd love to hear from you.
+        </p>
+        <ul class="contact-list">
+          <li>
+            <span class="label">Email</span>
+            <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+          </li>
+          <li>
+            <span class="label">Instagram</span>
+            <a href={site.instagram} target="_blank" rel="noopener">@tinytouchandtastes</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contact-form card">
+        <h2>Send a message</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    background:
+      radial-gradient(50% 60% at 85% 10%, var(--gold-100) 0%, transparent 60%),
+      radial-gradient(50% 60% at 5% 95%, var(--coral-100) 0%, transparent 60%);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .contact-list {
+    list-style: none;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  .contact-list .label {
+    display: block;
+    font-weight: 800;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+  .contact-list a {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .contact-form h2 { margin-bottom: 1.25rem; }
+
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+</style>

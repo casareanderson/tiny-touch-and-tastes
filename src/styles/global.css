@@ -1,0 +1,300 @@
+/* ===========================================================================
+   Tiny Touch & Tastes — design system
+   Palette: sage green, soft coral pink, golden yellow, warm ivory.
+   =========================================================================== */
+
+:root {
+  /* Brand colours */
+  --sage-50: #f4f6ee;
+  --sage-100: #e7ecd9;
+  --sage-200: #cfd9b7;
+  --sage-300: #b4c297;
+  --sage-400: #9bab79;
+  --sage-500: #82935f;
+  --sage-600: #6a7a4d;
+  --sage-700: #55623e;
+  --sage-800: #414c31;
+  --sage-900: #333b28;
+
+  --coral-50: #fdf0ee;
+  --coral-100: #fbe4e0;
+  --coral-200: #f6c9c2;
+  --coral-300: #efa69d;
+  --coral-400: #e88a80;
+  --coral-500: #d96e63;
+  --coral-600: #bd5449;
+
+  --gold-50: #fdf6e4;
+  --gold-100: #fcf0d2;
+  --gold-200: #f7e0a3;
+  --gold-300: #f0c96b;
+  --gold-400: #e7b33f;
+  --gold-500: #d29a24;
+
+  --ivory: #fdf9f1;
+  --ivory-soft: #fffdf8;
+  --ink: #3e4637;
+  --ink-soft: #66705e;
+
+  /* Semantic tokens */
+  --bg: var(--ivory);
+  --bg-soft: var(--ivory-soft);
+  --text: var(--ink);
+  --text-muted: var(--ink-soft);
+  --primary: var(--sage-600);
+  --primary-strong: var(--sage-700);
+  --primary-soft: var(--sage-100);
+  --accent: var(--coral-400);
+  --accent-soft: var(--coral-100);
+  --highlight: var(--gold-300);
+  --highlight-soft: var(--gold-100);
+
+  /* Typography */
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+  /* Shape & shadow */
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(65, 76, 49, 0.08), 0 2px 8px rgba(65, 76, 49, 0.06);
+  --shadow: 0 4px 12px rgba(65, 76, 49, 0.08), 0 12px 32px rgba(65, 76, 49, 0.1);
+
+  --container: 1120px;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.65;
+  font-size: 1.0625rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1.15;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5em;
+}
+
+h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.4rem); }
+h3 { font-size: clamp(1.15rem, 2.2vw, 1.45rem); }
+
+p { margin: 0 0 1em; }
+
+a {
+  color: var(--primary-strong);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Layout helpers */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+.lead {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.9rem 1.6rem;
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background: var(--primary-strong);
+  box-shadow: var(--shadow);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-accent:hover {
+  background: var(--coral-500);
+}
+
+.btn-gold {
+  background: var(--gold-300);
+  color: var(--sage-900);
+}
+
+.btn-gold:hover {
+  background: var(--gold-400);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--primary);
+  color: var(--primary-strong);
+}
+
+.btn-outline:hover {
+  background: var(--primary-soft);
+}
+
+.btn-lg {
+  padding: 1.05rem 2rem;
+  font-size: 1.05rem;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-soft);
+  border: 1px solid rgba(106, 122, 77, 0.14);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.75rem;
+}
+
+/* Forms */
+.field {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  color: var(--ink);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  background: #fff;
+  border: 1.5px solid var(--sage-200);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.9rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--sage-100);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+::selection {
+  background: var(--gold-200);
+  color: var(--sage-900);
+}
+
+:focus-visible {
+  outline: 3px solid var(--coral-300);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

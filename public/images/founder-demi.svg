@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Portrait placeholder for the founder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6c9c2"/>
+      <stop offset="0.5" stop-color="#fdf9f1"/>
+      <stop offset="1" stop-color="#cfd9b7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="420" r="180" fill="#fdf9f1" opacity="0.85"/>
+  <path d="M400 300c-10 30 0 60 0 60s10-30 0-60z" fill="#82935f" opacity="0.35"/>
+  <path d="M300 560c0-70 45-115 100-115s100 45 100 115c0 40-28 65-50 82-14 11-22 11-30 11h-40c-8 0-16 0-30-11-22-17-50-42-50-82z" fill="#9bab79" opacity="0.5"/>
+</svg>

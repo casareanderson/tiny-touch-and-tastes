@@ -1,0 +1,5 @@
+# Copy this file to .dev.vars for local form testing.
+# Never commit .dev.vars or put real secrets in this example file.
+RESEND_API_KEY=
+CONTACT_EMAIL=hello@tinytouchandtastes.co.uk
+FROM_EMAIL="Tiny Touch & Tastes <onboarding@resend.dev>"

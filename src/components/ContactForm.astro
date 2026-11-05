@@ -1,0 +1,101 @@
+---
+import { withBase } from "../lib/paths";
+const isDemo = import.meta.env.PUBLIC_STATIC_DEMO === "true";
+---
+<form
+  class="contact-form"
+  data-endpoint={withBase("/api/contact")}
+  data-demo={isDemo ? "true" : undefined}
+  novalidate
+>
+  <div class="field">
+    <label for="c-name">Your name</label>
+    <input id="c-name" name="name" type="text" autocomplete="name" required />
+  </div>
+  <div class="field">
+    <label for="c-email">Email address</label>
+    <input id="c-email" name="email" type="email" autocomplete="email" required />
+  </div>
+  <div class="field">
+    <label for="c-message">Message</label>
+    <textarea id="c-message" name="message" required placeholder="How can we help?"></textarea>
+  </div>
+  <div class="hp" aria-hidden="true">
+    <label for="c-website">Leave this field empty</label>
+    <input id="c-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <button class="btn btn-primary btn-lg" type="submit">Send message</button>
+  <p class="form-status" role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .contact-form .btn { width: 100%; }
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .form-status {
+    margin-top: 0.75rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary-strong);
+  }
+  .form-status.error { color: var(--coral-600); }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>(".contact-form");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = form.querySelector<HTMLElement>(".form-status");
+    const btn = form.querySelector<HTMLButtonElement>("button[type='submit']");
+    if (!status || !btn) return;
+
+    const data = new FormData(form);
+    if (String(data.get("website") ?? "").length > 0) {
+      status.textContent = "Thanks! We'll be in touch soon.";
+      return;
+    }
+
+    if (form.dataset.demo === "true") {
+      status.textContent = "Demo only — your message hasn't been sent.";
+      return;
+    }
+
+    const payload = {
+      name: data.get("name"),
+      email: data.get("email"),
+      message: data.get("message"),
+    };
+
+    btn.disabled = true;
+    btn.textContent = "Sending…";
+    status.className = "form-status";
+    status.textContent = "";
+
+    try {
+      const res = await fetch(form.dataset.endpoint!, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = (await res.json().catch(() => ({}))) as { message?: string };
+      if (res.ok) {
+        status.textContent = json.message ?? "Thanks! We'll get back to you soon.";
+        form.reset();
+      } else {
+        status.className = "form-status error";
+        status.textContent = json.message ?? "Something went wrong — please try again.";
+      }
+    } catch {
+      status.className = "form-status error";
+      status.textContent = "Couldn't reach the server — please email us instead.";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Send message";
+    }
+  });
+</script>

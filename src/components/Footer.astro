@@ -1,0 +1,126 @@
+---
+import { site } from "../config";
+import Logo from "./Logo.astro";
+import { withBase } from "../lib/paths";
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <Logo />
+      <p class="footer-tag">{site.tagline}.</p>
+      <p class="footer-note">
+        Gentle, evidence-based classes created by a qualified infant massage
+        instructor and nutritionist.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h3>Explore</h3>
+      <ul>
+        <li><a href={withBase("/")}>Home</a></li>
+        <li><a href={withBase("/baby-massage")}>Baby Massage</a></li>
+        <li><a href={withBase("/weaning-workshop")}>Weaning Workshop</a></li>
+        <li><a href={withBase("/about")}>Meet Demi</a></li>
+        <li><a href={withBase("/book")}>Book a Class</a></li>
+        <li><a href={withBase("/contact")}>Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3>Get in touch</h3>
+      <ul>
+        <li><a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></li>
+        <li><a href={site.instagram} target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href={site.facebook} target="_blank" rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3>Loved your class?</h3>
+      <p class="footer-note">
+        Your kind words help other parents find us. We'd be so grateful for a
+        review.
+      </p>
+      <a class="btn btn-gold" href={site.googleReviewUrl} target="_blank" rel="noopener">
+        Leave a Google review
+      </a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <span>© {year} {site.name}. All rights reserved.</span>
+      <span class="footer-tiny">Baby massage &amp; weaning support</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--sage-900);
+    color: var(--sage-100);
+    margin-top: 4rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+    gap: 2.5rem;
+    padding-block: 3.5rem 2.5rem;
+  }
+  .footer-brand :global(.logo-name) { color: #fff; }
+  .footer-brand :global(.logo-tag) { color: var(--sage-200); }
+  .footer-tag {
+    margin: 1rem 0 0.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .footer-note {
+    font-size: 0.92rem;
+    color: var(--sage-200);
+    margin-bottom: 0.75rem;
+  }
+  .footer-col h3 {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.9rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .footer-col a:not(.btn) {
+    color: var(--sage-100);
+    font-size: 0.95rem;
+  }
+  .footer-col a:not(.btn):hover {
+    color: #fff;
+  }
+  .footer-bottom {
+    border-top: 1px solid rgba(231, 236, 217, 0.15);
+  }
+  .footer-bottom-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--sage-200);
+  }
+  .footer-tiny { opacity: 0.8; }
+
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom-inner { flex-direction: column; }
+  }
+</style>

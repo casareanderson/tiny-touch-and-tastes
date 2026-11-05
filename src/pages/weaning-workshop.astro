@@ -1,0 +1,148 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { weaningWorkshop, images, site } from "../config";
+import { withBase } from "../lib/paths";
+---
+
+<Layout
+  title="Weaning Workshop"
+  description={`${weaningWorkshop.name} — ${weaningWorkshop.price}. A practical guide to starting solids: readiness, first foods, allergens, safety and fussy eating.`}
+>
+  <section class="page-hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Weaning Workshop</span>
+        <h1>Start solids with confidence — and without the stress.</h1>
+        <p class="lead">{weaningWorkshop.blurb}</p>
+        <div class="meta">
+          <span class="meta-price">{weaningWorkshop.price}</span>
+          <span class="meta-note">{weaningWorkshop.priceNote}</span>
+          <span class="meta-sep">·</span>
+          <span>{weaningWorkshop.duration}</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn btn-primary btn-lg" href={withBase("/book")}>Book your place</a>
+          <a class="btn btn-outline btn-lg" href={withBase("/contact")}>Ask a question</a>
+        </div>
+      </div>
+      <img src={images.weaning} alt="Baby exploring first foods" width="800" height="600" />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What we'll cover</span>
+        <h2>Everything you need to begin well</h2>
+        <p class="lead">
+          A practical, evidence-based session — no judgement, just clear guidance
+          you can put into practice at home.
+        </p>
+      </div>
+      <ol class="curriculum">
+        {
+          weaningWorkshop.curriculum.map((item, i) => (
+            <li class="curriculum-item">
+              <span class="curriculum-num">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section cta-band">
+    <div class="container cta-inner">
+      <div>
+        <h2>Ready when you are</h2>
+        <p class="lead">{site.launchNote}</p>
+      </div>
+      <a class="btn btn-gold btn-lg" href={withBase("/book")}>Book a workshop</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-hero {
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    background:
+      radial-gradient(50% 60% at 90% 10%, var(--gold-100) 0%, transparent 60%),
+      radial-gradient(50% 60% at 5% 100%, var(--sage-100) 0%, transparent 60%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero-grid img {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  .meta {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 1.75rem;
+  }
+  .meta-price {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--primary-strong);
+  }
+  .meta-note, .meta-sep { color: var(--text-muted); }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  .section-head { max-width: 46rem; margin-bottom: 2.5rem; }
+
+  .curriculum {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .curriculum-item {
+    display: flex;
+    gap: 1rem;
+    background: var(--bg-soft);
+    border: 1px solid rgba(106, 122, 77, 0.14);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+  .curriculum-num {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .curriculum-item h3 { margin-bottom: 0.35rem; font-size: 1.15rem; }
+  .curriculum-item p { margin: 0; font-size: 0.95rem; color: var(--text-muted); }
+
+  .cta-band { background: var(--primary-soft); }
+  .cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .cta-inner h2 { margin-bottom: 0.25rem; }
+  .cta-inner .lead { margin: 0; }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .curriculum { grid-template-columns: 1fr; }
+  }
+</style>

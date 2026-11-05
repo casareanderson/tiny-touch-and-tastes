@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Weaning workshop illustration placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbe4e0"/>
+      <stop offset="1" stop-color="#fdf9f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <circle cx="150" cy="130" r="90" fill="#9bab79" opacity="0.4"/>
+  <path d="M260 300c0-80 65-130 140-130s140 50 140 130c0 30-14 52-40 52H300c-26 0-40-22-40-52z" fill="#fdf9f1" opacity="0.95"/>
+  <path d="M300 290c0-55 45-90 100-90s100 35 100 90z" fill="#82935f" opacity="0.55"/>
+  <path d="M470 210l40 20-40 22z" fill="#f0c96b"/>
+  <circle cx="610" cy="470" r="26" fill="#efa69d" opacity="0.7"/>
+  <circle cx="660" cy="500" r="18" fill="#f0c96b" opacity="0.7"/>
+  <circle cx="180" cy="480" r="22" fill="#82935f" opacity="0.5"/>
+</svg>

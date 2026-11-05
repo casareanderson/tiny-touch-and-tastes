@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Baby massage illustration placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cfd9b7"/>
+      <stop offset="1" stop-color="#fdf9f1"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <circle cx="640" cy="120" r="90" fill="#f0c96b" opacity="0.5"/>
+  <g>
+    <circle cx="400" cy="240" r="120" fill="#fdf9f1" opacity="0.9"/>
+    <path d="M400 300c-40-27-66-54-66-83 0-23 18-40 38-40 14 0 26 8 28 22 2-14 14-22 28-22 20 0 38 17 38 40 0 29-26 56-66 83z" fill="#efa69d"/>
+  </g>
+  <path d="M300 520c30 20 200 20 230 0" stroke="#f6c9c2" stroke-width="18" fill="none" stroke-linecap="round" opacity="0.7"/>
+</svg>
