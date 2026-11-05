@@ -21,7 +21,7 @@ import { withBase } from "../lib/paths";
           <span>{babyMassage.duration}</span>
         </div>
         <div class="cta-row">
-          <a class="btn btn-primary btn-lg" href={withBase("/book")}>Book your place</a>
+          <a class="btn btn-primary btn-lg" href={withBase("/book?context=massage")}>Book your place</a>
           <a class="btn btn-outline btn-lg" href={withBase("/contact")}>Ask a question</a>
         </div>
       </div>
@@ -69,7 +69,7 @@ import { withBase } from "../lib/paths";
         <h2>Ready when you are</h2>
         <p class="lead">{site.launchNote}</p>
       </div>
-      <a class="btn btn-gold btn-lg" href={withBase("/book")}>Book a class</a>
+      <a class="btn btn-gold btn-lg" href={withBase("/book?context=massage")}>Book a class</a>
     </div>
   </section>
 </Layout>
