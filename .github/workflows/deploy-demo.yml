@@ -30,7 +30,6 @@ jobs:
       - name: Build static demo
         run: npm run build
         env:
-          BASE_PATH: /${{ github.event.repository.name }}/
           PUBLIC_STATIC_DEMO: "true"
       - name: Configure Pages
         uses: actions/configure-pages@v5
