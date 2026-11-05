@@ -11,8 +11,8 @@ const { href = withBase("/") } = Astro.props;
     class="logo-img"
     src={withBase(images.logo)}
     alt={site.name}
-    width="160"
-    height="43"
+    width="480"
+    height="320"
   />
 </a>
 
@@ -27,7 +27,12 @@ const { href = withBase("/") } = Astro.props;
     text-decoration: none;
   }
   .logo-img {
-    height: 2rem;
-    width: auto;
+    width: 8.5rem;
+    height: auto;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+  @media (max-width: 480px) {
+    .logo-img { width: 7rem; }
   }
 </style>
