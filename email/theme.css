@@ -1,0 +1,53 @@
+/* ==========================================================================
+   Tiny Touch & Tastes — email brand tokens
+   --------------------------------------------------------------------------
+   Email clients ignore CSS custom properties and external stylesheets, so use
+   these HEX values directly in inline styles when building templates.
+
+   Sage green  ·  soft coral pink  ·  golden yellow  ·  warm ivory
+   ========================================================================== */
+
+:root {
+  /* Greens (primary) */
+  --sage-50:  #f4f6ee;
+  --sage-100: #e7ecd9;
+  --sage-200: #cfd9b7;
+  --sage-500: #82935f;
+  --sage-600: #6a7a4d;   /* primary */
+  --sage-700: #55623e;   /* primary strong / headings */
+  --sage-900: #333b28;   /* footer text on light */
+
+  /* Coral (accent) */
+  --coral-100: #fbe4e0;
+  --coral-400: #e88a80;  /* accent */
+  --coral-500: #d96e63;
+
+  /* Gold (highlight) */
+  --gold-100: #fcf0d2;
+  --gold-300: #f0c96b;   /* highlight / CTA alt */
+
+  /* Neutrals */
+  --ivory:     #fdf9f1;   /* page background */
+  --ink:       #3e4637;   /* body text */
+  --ink-soft:  #66705e;   /* muted text */
+  --white:     #ffffff;
+}
+
+/* Common email recipe
+   --------------------------------------------------------------------------
+   Page background : var(--ivory)     #fdf9f1
+   Card background : var(--white)     #ffffff
+   Header band     : var(--sage-100)  #e7ecd9   (logo strip)
+   Heading text    : var(--sage-700)  #55623e   (Georgia serif)
+   Body text       : var(--ink)       #3e4637   (Helvetica / Arial)
+   Muted text      : var(--ink-soft)  #66705e
+   Primary button  : var(--sage-600)  #6a7a4d   (white text)
+   Alt/accent      : var(--coral-400) #e88a80
+   Highlight       : var(--gold-300)  #f0c96b
+   Footer band     : var(--sage-50)   #f4f6ee
+   --------------------------------------------------------------------------
+
+   Typography:
+   Headings — Georgia, 'Times New Roman', serif
+   Body     — Helvetica, Arial, sans-serif
+*/
