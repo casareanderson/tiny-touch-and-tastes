@@ -22,5 +22,11 @@
     "@astrojs/check": "^0.9.12",
     "@types/node": "^26.6.6",
     "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "@babel/helper-string-parser": "8.0.6",
+    "@babel/helper-validator-identifier": "8.0.6",
+    "@babel/parser": "8.0.6",
+    "@babel/types": "8.0.6"
   }
 }
