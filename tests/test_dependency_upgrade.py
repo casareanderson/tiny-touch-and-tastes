@@ -9,23 +9,20 @@ def _load_json(name):
         return json.load(f)
 
 
-def test_babel_helper_validator_identifier_is_upgraded():
+def test_babel_parser_stays_on_major_7():
     lock = _load_json("package-lock.json")
-    pkg = lock["packages"]["node_modules/@babel/helper-validator-identifier"]
-    assert pkg["version"] == "8.0.6"
-    assert "8.0.6" in pkg["resolved"]
+    pkg = lock["packages"]["node_modules/@babel/parser"]
+    assert pkg["version"].startswith("7.")
 
 
-def test_override_pins_the_new_major():
+def test_babel_types_stays_on_major_7():
+    lock = _load_json("package-lock.json")
+    pkg = lock["packages"]["node_modules/@babel/types"]
+    assert pkg["version"].startswith("7.")
+
+
+def test_no_overrides_force_babel_8():
     manifest = _load_json("package.json")
-    assert manifest["overrides"]["@babel/helper-validator-identifier"] == "8.0.6"
-
-
-def test_babel_types_and_parser_move_to_8x():
-    lock = _load_json("package-lock.json")
-    assert (
-        lock["packages"]["node_modules/@babel/types"]["version"] == "8.0.6"
-    )
-    assert (
-        lock["packages"]["node_modules/@babel/parser"]["version"] == "8.0.6"
-    )
+    overrides = manifest.get("overrides", {})
+    for name in overrides:
+        assert not name.startswith("@babel/"), name
