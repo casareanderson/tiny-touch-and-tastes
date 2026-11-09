@@ -1,142 +1,197 @@
 # Tiny Touch & Tastes
 
-A warm, mobile-friendly coming-soon website for Demi's baby massage and weaning classes. Built locally with Astro and the Cloudflare adapter.
+A coming-soon website for a baby massage and weaning class business. It is built with Astro and deployed to Cloudflare Workers, and includes a waiting-list signup, a demo booking flow and email-sending contact forms.
 
-## Included
+![Tiny Touch & Tastes homepage — hero with waiting-list card](docs/screenshots/homepage.png)
 
-- Coming-soon homepage with waiting-list signup
-- Baby Massage page: £60 for a four-week block, approximately 90 minutes per class
-- Weaning Workshop page: £25, initially online, with the full workshop curriculum
-- Meet the Founder page using Demi's story
-- Contact page
-- Fluid booking preview with a month calendar and date/time selection
-- Free Baby Massage Taster booking option with no payment step
-- Free taster-class and Google-review prompts
-- Resend-ready waiting-list and contact form endpoints
-- Responsive navigation and the sage, coral, gold and ivory design system
+## Contents
 
-**Booking and GoCardless are previews only.** No real availability is stored, no booking is created, and no payment is taken yet.
+- [What it does](#what-it-does)
+- [Screenshots](#screenshots)
+- [Quick start](#quick-start)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [How it works](#how-it-works)
+- [Status, limits and real results](#status-limits-and-real-results)
+- [Roadmap](#roadmap)
+- [Licence and credits](#licence-and-credits)
 
-## Run locally
+## What it does
+
+- Shown on the home page: a hero, two class cards and a waiting-list form that posts to `POST /api/waitlist` (`src/pages/index.astro`, `src/components/WaitingListForm.astro`).
+- Two course pages driven entirely by content in `src/config.ts`: Baby Massage at £60 for a four-week block (~90 minutes per class) and the Weaning Workshop at £25, online. Each page lists what to expect, benefits and a full curriculum (`src/pages/baby-massage.astro`, `src/pages/weaning-workshop.astro`).
+- A demo booking wizard with three steps — class, date and time, then details — that includes a month calendar, per-class time slots (examples in `src/pages/book.astro`) and a free Baby Massage Taster option that skips payment.
+- A contact page whose form posts to `POST /api/contact`; submissions are emailed through Resend (`src/pages/contact.astro`, `src/pages/api/contact.ts`, `src/lib/notify.ts`).
+- A meet-the-founder page with Demi's story and her two qualifications: Infant Massage Instructor (To Baby and Beyond) and Level 4 RSPH Nutrition (Training Fit) (`src/pages/about.astro`).
+- A responsive layout with a collapsing mobile menu and the sage, coral, gold and ivory design system defined in `src/styles/global.css`.
+- A GitHub Actions workflow that builds a base-path static demo for GitHub Pages with the forms in demo mode (`deploy-demo.yml`).
+
+## Screenshots
+
+![Home page with the waiting-list card, hero copy and class cards](docs/screenshots/homepage.png)
+
+![Demo booking flow after choosing Baby Massage and a date: calendar and time slots](docs/screenshots/booking-calendar.png)
+
+![Meet-the-founder page with Demi's story and qualifications](docs/screenshots/about.png)
+
+All three screenshots are of the freshly built site, served locally on 9 November 2026.
+
+## Quick start
+
+Prerequisites: **Node 22.23.4 or later** and npm.
 
 ```sh
 npm install
 npm run dev
 ```
 
-Open `http://localhost:4321`.
+Open `http://localhost:4321`. You should see the home page with the waiting-list card; submitting the form returns a success message (see [Usage](#usage) for what happens without email configuration).
+
+## Usage
+
+Run the dev server:
+
+```sh
+npm run dev
+```
 
 Useful commands:
 
 ```sh
-npm run check       # TypeScript and Astro checks
-npm run build       # Production build in dist/
-npm run preview     # Preview the production build
-npx astro dev stop  # Stop a background dev server
+npm run check        # run the TypeScript + Astro checks
+npm run dev -- --host 127.0.0.1 --port 4321   # dev server on a specific host/port
+npm run build        # production build in dist/
+npm run preview      # serve the production build
 ```
 
-## Edit the content
+The dev server output looks like this:
 
-Most business details are in `src/config.ts`:
+```
+ astro  v7.4.7 ready in 9154 ms
+┃ Local    http://127.0.0.1:4321/
+15:15:40 watching for file changes...
+```
 
-- Domain and contact email
-- Instagram, Facebook and Google review links
-- `comingSoon` mode
-- Prices, course descriptions, benefits and curriculum
-- Image paths
+### Forms without email configuration
 
-Page-specific wording is in `src/pages/`. Colours, fonts and shared styles are in `src/styles/global.css`.
-
-## Add photos
-
-Place the real photos in `public/images/`, then update the `images` object near the top of `src/config.ts`.
-
-Real images now in use:
-
-| Setting | File | Where it appears |
-| --- | --- | --- |
-| `logo` | `tiny-touch-and-tastes-logo.jpg` | Header logo, footer brand, OG social image, favicon |
-| `hero` | `weaning-baby.jpg` | Layout default OG image fallback |
-| `weaning` | `weaning-baby.jpg` | Weaning Workshop page hero & homepage weaning card |
-| `weaningGallery[0]` | `weaning-first-foods.jpg` | Weaning Workshop photo gallery |
-| `weaningGallery[1]` | `weaning-family-meal.jpg` | Weaning Workshop photo gallery |
-| `weaningGallery[2]` | `weaning-batch-cooking.jpg` | Weaning Workshop photo gallery |
-
-Placeholders remaining:
-
-| Setting | Placeholder | Suggested photo |
-| --- | --- | --- |
-| `founder` | `founder-demi.svg` | Portrait of Demi, portrait orientation |
-| `babyMassage` | `baby-massage.svg` | Baby massage class, landscape |
-
-JPG, PNG, WebP and AVIF files are fine. Keep the SVG placeholders until the replacements are ready.
-
-The Zima-staged photos have been copied to `public/images/` and wired into the site. Only the five approved files (1 logo + 4 weaning images) were deployed; the remaining staged photos were not included.
-
-## Waiting list and contact forms
-
-The browser forms post JSON to:
-
-- `POST /api/waitlist`
-- `POST /api/contact`
-
-Without email configuration, both endpoints return a success response for local previewing and log the submission to the dev server. **Local test submissions are not permanently stored.** In production, each submission is emailed to `CONTACT_EMAIL` through Resend.
-
-### Local email setup
+With no `RESEND_API_KEY` set, both form endpoints still return a success response and log the submission to the dev server, so the flow can be tested end-to-end:
 
 ```sh
-cp .dev.vars.example .dev.vars
+curl -X POST http://localhost:4321/api/waitlist \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Alex","email":"alex@example.com","interest":"both"}'
+# => {"ok":true,"message":"Thanks! You're on the list — we'll be in touch when classes open."}
 ```
 
-Fill in `.dev.vars` locally; it is ignored by Git. Do not commit real credentials.
+The dev server logs:
 
-Required values:
+```
+[vite] [notify] RESEND not configured — would send to (no CONTACT_EMAIL):
+  subject: New waiting-list signup: Alex
+  text: Name: Alex Email: alex@example.com Interest: both
+```
 
-- `RESEND_API_KEY`: Resend API key
-- `CONTACT_EMAIL`: Demi's inbox for signups and enquiries
-- `FROM_EMAIL`: a sender on a domain verified in Resend
+Local test submissions are not stored permanently.
 
-## Public GitHub Pages demo
+### Static demo build
 
-`.github/workflows/deploy-demo.yml` builds the demo and publishes it with GitHub Pages whenever `main` is updated. Navigation and the booking calendar work; forms explicitly report that they are in demo mode and do not send details.
-
-1. Create an empty public GitHub repository named `tiny-touch-and-tastes`.
-2. Push this project to its `main` branch.
-3. In **Settings → Pages**, choose **GitHub Actions** as the source.
-4. The demo will be available at `https://<github-username>.github.io/tiny-touch-and-tastes/` after the workflow finishes.
-
-To test the same base-path build locally:
+To reproduce the base-path build the GitHub workflow uses:
 
 ```sh
 BASE_PATH=/tiny-touch-and-tastes/ PUBLIC_STATIC_DEMO=true npm run build
 python3 -m http.server 4322 --directory dist/client
 ```
 
-Then open `http://localhost:4322/tiny-touch-and-tastes/`.
+Then open `http://localhost:4322/tiny-touch-and-tastes/`. Forms in this build show a "Demo only" notice and do not send anything.
 
-## Cloudflare deployment
+## Configuration
 
-The project uses `@astrojs/cloudflare` and includes `wrangler.jsonc` for Cloudflare Workers with static assets.
+Most business content — course names, prices, descriptions, the domain, social links and `comingSoon` mode — sits in `src/config.ts`. The environment variables the code actually reads are:
 
-1. Build with `npm run build`.
-2. Authenticate Wrangler with the intended Cloudflare account.
-3. Configure `CONTACT_EMAIL` and `FROM_EMAIL` as non-secret environment variables.
-4. Configure `RESEND_API_KEY` as a Cloudflare secret, for example with `npx wrangler secret put RESEND_API_KEY`.
-5. Deploy with `npx wrangler deploy`.
-6. Attach the real custom domain in Cloudflare.
+| Variable | Read in | Default | What it does |
+| --- | --- | --- | --- |
+| `BASE_PATH` | `astro.config.mjs` | `/` | Base path prefix for assets and links. Set to `/your-repo-name/` when building for GitHub Pages. |
+| `PUBLIC_STATIC_DEMO` | `src/components/ContactForm.astro`, `WaitingListForm.astro` | *(unset)* | When `true`, browser forms show a demo-only notice and do not send. |
+| `RESEND_API_KEY` | `src/lib/notify.ts` | *(none)* | Resend API key. Without it, form submissions are logged locally and not emailed. |
+| `CONTACT_EMAIL` | `src/lib/notify.ts` | *(none)* | Recipient for waiting-list signups and contact enquiries. |
+| `FROM_EMAIL` | `src/lib/notify.ts` | `Tiny Touch & Tastes <onboarding@resend.dev>` | Email sender. In production use an address on a Resend-verified domain. |
 
-No deployment or DNS changes have been made.
+Copy `.dev.vars.example` to `.dev.vars` for local form testing. `.dev.vars` is ignored by Git; never commit real credentials.
 
-## Before launch
+## How it works
 
-- Replace the placeholder domain, email and social/review URLs in `src/config.ts`.
-- Add the real photos and confirm permission for any parent/baby photos used.
-- Add genuine parent testimonials below the homepage class cards; do not use invented reviews.
-- Confirm the final qualification wording with Demi.
-- Verify the Resend sender domain and test both forms in production.
-- Decide where waiting-list entries should be permanently stored if email alone is not enough.
-- Add real class availability and a persistent booking store.
-- Integrate GoCardless's hosted payment/Direct Debit flow; the current payment button is deliberately non-functional.
-- Replace the example booking dates with real availability.
-- Add privacy and booking/cancellation terms before taking details or payments.
-- Set `comingSoon: false` only when the live booking flow is ready.
+Astro prerenders the six pages to static HTML and builds the server adapter with `@astrojs/cloudflare`. The two API routes (`src/pages/api/contact.ts` and `src/pages/api/waitlist.ts`) have `prerender = false`, so they run as Cloudflare Worker functions. Submissions go through `src/lib/notify.ts`, which reads the Resend configuration from the environment and calls the Resend API; with no key it logs locally and still returns success. `src/lib/paths.ts` (`withBase`) prefixes every asset and link with the configured `BASE_PATH`, so the same build serves correctly both at `/` locally and at `/repo-name/` on GitHub Pages.
+
+```mermaid
+flowchart LR
+  V[Visitor browser] -->|POST /api/waitlist| W[Cloudflare Worker]
+  V -->|POST /api/contact| W
+  W --> N[src/lib/notify.ts]
+  N -->|RESEND_API_KEY set| R[Resend API]
+  N -->|no key| L[logged to dev server]
+  B[astro build] --> D[dist/]
+  G[deploy-demo.yml] -->|BASE_PATH + PUBLIC_STATIC_DEMO| P[GitHub Pages static demo]
+```
+
+Project structure (key files):
+
+```
+astro.config.mjs                Base path config, Cloudflare adapter
+wrangler.jsonc                  Cloudflare Workers config, ASSETS binding
+src/
+  config.ts                     Site content: courses, prices, links, images
+  lib/
+    notify.ts                   Reads env; sends email via Resend
+    paths.ts                    withBase() — base-path-aware asset/link paths
+  layouts/Layout.astro          Shared <head>, meta tags, Google Fonts
+  components/                   Header, Footer, Logo, contact & waiting-list forms
+  pages/                        index, baby-massage, weaning-workshop, about, book, contact
+    api/
+      contact.ts                POST contact enquiries
+      waitlist.ts               POST waiting-list signups
+  styles/global.css             Design system: sage, coral, gold, ivory
+public/images/                  Logo, hero and weaning photo galleries
+email/                          Email theme and subscribe template
+tests/                          Dependency-upgrade regression tests
+.github/workflows/deploy-demo.yml
+```
+
+Fonts are served from Google Fonts (Fraunces and Nunito) in `src/layouts/Layout.astro`.
+
+## Status, limits and real results
+
+Status: pre-launch. `src/config.ts` sets `comingSoon: true`, so the site is a coming-soon demo with a waiting list rather than live booking.
+
+Measured (9 November 2026, local machine, Node 22.23.4):
+
+- `astro build` completes and prerenders all six routes (`/`, `/about`, `/baby-massage`, `/book`, `/contact`, `/weaning-workshop`).
+- Dev server starts and serves `/` and `/book` with a 200 status.
+- `POST /api/waitlist` and `POST /api/contact` return `{"ok":true,...}` and log locally when `RESEND_API_KEY` is absent.
+- No analytics, uptime, accessibility or performance measurements have been run for this site.
+
+Known limits and what it does not do:
+
+- **No real booking.** The booking wizard uses example weekdays and times per class and dates 7–90 days ahead (`book.astro`). Nothing is stored; the confirmation screen states it is a demo.
+- **No payment.** The payment button is deliberate: `book.astro` notes the live flow will use GoCardless. No payment or Direct Debit is integrated.
+- **Forms**. Without `RESEND_API_KEY`, submissions are neither emailed nor stored.
+- **Placeholder images**. `founder-demi.svg` and `baby-massage.svg` are still placeholders in `public/images/` awaiting real photos.
+- **Placeholder links**. The Instagram, Facebook and Google-review URLs in `src/config.ts` are placeholders yet to be set.
+- **Domain**. `tinytouchandtastes.co.uk` is configured but no DNS or Cloudflare deployment has been made.
+- **GitHub Pages**. On 9 November 2026 the Pages API returned 404 for this repo, so the static demo is not live on Pages; the workflow is available to publish it.
+
+## Roadmap
+
+- Replace placeholder domain, social and review URLs and the two placeholder images in `src/config.ts`.
+- Add real parent testimonials below the home-page class cards (no invented reviews).
+- Add genuine availability and a persistent booking store.
+- Integrate GoCardless for payment.
+- Set `comingSoon: false` only once the live booking flow is ready.
+
+## Licence and credits
+
+No open-source licence is applied; the site and its content are proprietary — all rights reserved.
+
+- Fonts: Fraunces and Nunito, served from Google Fonts.
+- Built with [Astro](https://astro.build) and the `@astrojs/cloudflare` adapter; static assets are deployed via Cloudflare Workers.
+- Email delivery uses the [Resend](https://resend.com) API.
+- Demo booking dates, times, prices and course curricula are example content supplied for this build.
