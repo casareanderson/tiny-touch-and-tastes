@@ -1,13 +1,10 @@
-# Tiny Touch & Tastes
+# Example Classes
 
 A coming-soon website for a baby massage and weaning class business. It is built with Astro and deployed to Cloudflare Workers, and includes a waiting-list signup, a demo booking flow and email-sending contact forms.
-
-![Tiny Touch & Tastes homepage — hero with waiting-list card](docs/screenshots/homepage.png)
 
 ## Contents
 
 - [What it does](#what-it-does)
-- [Screenshots](#screenshots)
 - [Quick start](#quick-start)
 - [Usage](#usage)
 - [Configuration](#configuration)
@@ -22,19 +19,8 @@ A coming-soon website for a baby massage and weaning class business. It is built
 - Two course pages driven entirely by content in `src/config.ts`: Baby Massage at £60 for a four-week block (~90 minutes per class) and the Weaning Workshop at £25, online. Each page lists what to expect, benefits and a full curriculum (`src/pages/baby-massage.astro`, `src/pages/weaning-workshop.astro`).
 - A demo booking wizard with three steps — class, date and time, then details — that includes a month calendar, per-class time slots (examples in `src/pages/book.astro`) and a free Baby Massage Taster option that skips payment.
 - A contact page whose form posts to `POST /api/contact`; submissions are emailed through Resend (`src/pages/contact.astro`, `src/pages/api/contact.ts`, `src/lib/notify.ts`).
-- A meet-the-founder page with Demi's story and her two qualifications: Infant Massage Instructor (To Baby and Beyond) and Level 4 RSPH Nutrition (Training Fit) (`src/pages/about.astro`).
 - A responsive layout with a collapsing mobile menu and the sage, coral, gold and ivory design system defined in `src/styles/global.css`.
 - A GitHub Actions workflow that builds a base-path static demo for GitHub Pages with the forms in demo mode (`deploy-demo.yml`).
-
-## Screenshots
-
-![Home page with the waiting-list card, hero copy and class cards](docs/screenshots/homepage.png)
-
-![Demo booking flow after choosing Baby Massage and a date: calendar and time slots](docs/screenshots/booking-calendar.png)
-
-![Meet-the-founder page with Demi's story and qualifications](docs/screenshots/about.png)
-
-All three screenshots are of the freshly built site, served locally on 9 November 2026.
 
 ## Quick start
 
@@ -114,13 +100,13 @@ Most business content — course names, prices, descriptions, the domain, social
 | `PUBLIC_STATIC_DEMO` | `src/components/ContactForm.astro`, `WaitingListForm.astro` | *(unset)* | When `true`, browser forms show a demo-only notice and do not send. |
 | `RESEND_API_KEY` | `src/lib/notify.ts` | *(none)* | Resend API key. Without it, form submissions are logged locally and not emailed. |
 | `CONTACT_EMAIL` | `src/lib/notify.ts` | *(none)* | Recipient for waiting-list signups and contact enquiries. |
-| `FROM_EMAIL` | `src/lib/notify.ts` | `Tiny Touch & Tastes <onboarding@resend.dev>` | Email sender. In production use an address on a Resend-verified domain. |
+| `FROM_EMAIL` | `src/lib/notify.ts` | `Example Classes <onboarding@resend.dev>` | Email sender. In production use an address on a Resend-verified domain. |
 
 Copy `.dev.vars.example` to `.dev.vars` for local form testing. `.dev.vars` is ignored by Git; never commit real credentials.
 
 ## How it works
 
-Astro prerenders the six pages to static HTML and builds the server adapter with `@astrojs/cloudflare`. The two API routes (`src/pages/api/contact.ts` and `src/pages/api/waitlist.ts`) have `prerender = false`, so they run as Cloudflare Worker functions. Submissions go through `src/lib/notify.ts`, which reads the Resend configuration from the environment and calls the Resend API; with no key it logs locally and still returns success. `src/lib/paths.ts` (`withBase`) prefixes every asset and link with the configured `BASE_PATH`, so the same build serves correctly both at `/` locally and at `/repo-name/` on GitHub Pages.
+Astro prerenders the five pages to static HTML and builds the server adapter with `@astrojs/cloudflare`. The two API routes (`src/pages/api/contact.ts` and `src/pages/api/waitlist.ts`) have `prerender = false`, so they run as Cloudflare Worker functions. Submissions go through `src/lib/notify.ts`, which reads the Resend configuration from the environment and calls the Resend API; with no key it logs locally and still returns success. `src/lib/paths.ts` (`withBase`) prefixes every asset and link with the configured `BASE_PATH`, so the same build serves correctly both at `/` locally and at `/repo-name/` on GitHub Pages.
 
 ```mermaid
 flowchart LR
@@ -145,12 +131,12 @@ src/
     paths.ts                    withBase() — base-path-aware asset/link paths
   layouts/Layout.astro          Shared <head>, meta tags, Google Fonts
   components/                   Header, Footer, Logo, contact & waiting-list forms
-  pages/                        index, baby-massage, weaning-workshop, about, book, contact
+  pages/                        index, baby-massage, weaning-workshop, book, contact
     api/
       contact.ts                POST contact enquiries
       waitlist.ts               POST waiting-list signups
   styles/global.css             Design system: sage, coral, gold, ivory
-public/images/                  Logo, hero and weaning photo galleries
+public/images/                  Placeholder hero, course and gallery illustrations
 email/                          Email theme and subscribe template
 tests/                          Dependency-upgrade regression tests
 .github/workflows/deploy-demo.yml
@@ -164,7 +150,7 @@ Status: pre-launch. `src/config.ts` sets `comingSoon: true`, so the site is a co
 
 Measured (9 November 2026, local machine, Node 22.23.4):
 
-- `astro build` completes and prerenders all six routes (`/`, `/about`, `/baby-massage`, `/book`, `/contact`, `/weaning-workshop`).
+- `astro build` completes and prerenders all five routes (`/`, `/baby-massage`, `/book`, `/contact`, `/weaning-workshop`).
 - Dev server starts and serves `/` and `/book` with a 200 status.
 - `POST /api/waitlist` and `POST /api/contact` return `{"ok":true,...}` and log locally when `RESEND_API_KEY` is absent.
 - No analytics, uptime, accessibility or performance measurements have been run for this site.
@@ -174,14 +160,14 @@ Known limits and what it does not do:
 - **No real booking.** The booking wizard uses example weekdays and times per class and dates 7–90 days ahead (`book.astro`). Nothing is stored; the confirmation screen states it is a demo.
 - **No payment.** The payment button is deliberate: `book.astro` notes the live flow will use GoCardless. No payment or Direct Debit is integrated.
 - **Forms**. Without `RESEND_API_KEY`, submissions are neither emailed nor stored.
-- **Placeholder images**. `founder-demi.svg` and `baby-massage.svg` are still placeholders in `public/images/` awaiting real photos.
+- **Placeholder images**. `hero.svg`, `baby-massage.svg` and `weaning-workshop.svg` are still placeholders in `public/images/` awaiting real photos.
 - **Placeholder links**. The Instagram, Facebook and Google-review URLs in `src/config.ts` are placeholders yet to be set.
-- **Domain**. `tinytouchandtastes.co.uk` is configured but no DNS or Cloudflare deployment has been made.
+- **Domain**. `example.com` is a placeholder; no real DNS or Cloudflare deployment is configured.
 - **GitHub Pages**. On 9 November 2026 the Pages API returned 404 for this repo, so the static demo is not live on Pages; the workflow is available to publish it.
 
 ## Roadmap
 
-- Replace placeholder domain, social and review URLs and the two placeholder images in `src/config.ts`.
+- Replace placeholder domain, social and review URLs and the placeholder images in `src/config.ts`.
 - Add real parent testimonials below the home-page class cards (no invented reviews).
 - Add genuine availability and a persistent booking store.
 - Integrate GoCardless for payment.

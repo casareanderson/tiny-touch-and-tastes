@@ -1,5 +1,5 @@
 ---
-import { images, site } from "../config";
+import { site } from "../config";
 import { withBase } from "../lib/paths";
 interface Props {
   href?: string;
@@ -7,13 +7,7 @@ interface Props {
 const { href = withBase("/") } = Astro.props;
 ---
 <a class="logo" href={href} aria-label={`${site.name} — home`}>
-  <img
-    class="logo-img"
-    src={images.logo}
-    alt={site.name}
-    width="480"
-    height="320"
-  />
+  <span class="logo-text">{site.name}</span>
 </a>
 
 <style>
@@ -26,13 +20,14 @@ const { href = withBase("/") } = Astro.props;
   .logo:hover {
     text-decoration: none;
   }
-  .logo-img {
-    width: 8.5rem;
-    height: auto;
-    display: block;
-    mix-blend-mode: multiply;
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-strong);
+    white-space: nowrap;
   }
   @media (max-width: 480px) {
-    .logo-img { width: 7rem; }
+    .logo-text { font-size: 1.25rem; }
   }
 </style>

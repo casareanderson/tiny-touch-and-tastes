@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tiny Touch &amp; Tastes">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Example Classes">
   <rect width="64" height="64" rx="18" fill="#fdf9f1"/>
   <circle cx="32" cy="32" r="24" fill="#82935f"/>
   <path d="M32 40c-6.5-4.3-10.5-8.6-10.5-13.2 0-3.6 2.8-6.3 6.1-6.3 2.3 0 4.2 1.4 4.4 3.8.2-2.4 2.1-3.8 4.4-3.8 3.3 0 6.1 2.7 6.1 6.3C42.5 31.4 38.5 35.7 32 40z" fill="#f6c9c2"/>

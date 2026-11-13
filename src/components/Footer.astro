@@ -22,7 +22,6 @@ const year = new Date().getFullYear();
         <li><a href={withBase("/")}>Home</a></li>
         <li><a href={withBase("/baby-massage")}>Baby Massage</a></li>
         <li><a href={withBase("/weaning-workshop")}>Weaning Workshop</a></li>
-        <li><a href={withBase("/about")}>Meet Demi</a></li>
         <li><a href={withBase("/book")}>Book a Class</a></li>
         <li><a href={withBase("/contact")}>Contact</a></li>
       </ul>
@@ -69,13 +68,8 @@ const year = new Date().getFullYear();
     gap: 2.5rem;
     padding-block: 3.5rem 2.5rem;
   }
-  .footer-brand :global(.logo-img) {
-    width: 11rem;
-    height: auto;
-    mix-blend-mode: normal;
-    background: var(--ivory-soft);
-    border-radius: 14px;
-    padding: 0.5rem 0.65rem;
+  .footer-brand :global(.logo-text) {
+    color: #fff;
   }
   .footer-tag {
     margin: 1rem 0 0.5rem;

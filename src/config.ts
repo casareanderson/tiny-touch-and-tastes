@@ -1,24 +1,24 @@
 // ---------------------------------------------------------------------------
-// Tiny Touch & Tastes — single source of truth for site content & settings.
+// Single source of truth for site content & settings.
 // Edit this file to change copy, prices, availability, links, and images.
 // ---------------------------------------------------------------------------
 
 import { withBase } from "./lib/paths";
 
 export const site = {
-  name: "Tiny Touch & Tastes",
-  shortName: "Tiny Touch & Tastes",
+  name: "Example Classes",
+  shortName: "Example Classes",
   tagline: "Gentle baby massage & weaning support for new parents",
   // TODO: replace with your real domain when you launch.
-  domain: "tinytouchandtastes.co.uk",
-  url: "https://tinytouchandtastes.co.uk",
+  domain: "example.com",
+  url: "https://example.com",
 
   // Where enquiries & waitlist signups are sent (set via RESEND + CONTACT_EMAIL).
-  contactEmail: "hello@tinytouchandtastes.co.uk",
+  contactEmail: "hello@example.com",
 
   // Social / review links — set these before launch.
-  instagram: "https://instagram.com/",
-  facebook: "https://facebook.com/",
+  instagram: "https://instagram.com/your-handle",
+  facebook: "https://facebook.com/your-page",
   // The URL parents use to leave you a Google review (your Google Business page).
   googleReviewUrl: "https://g.page/r/REPLACE-ME/review",
 
@@ -29,19 +29,17 @@ export const site = {
 } as const;
 
 // ---------------------------------------------------------------------------
-// Images. Real photos are in /public/images. Replace placeholders as they
-// become available — see README for guidance.
+// Images. Placeholder illustrations live in /public/images. Swap in your own
+// photos as they become available.
 // ---------------------------------------------------------------------------
 export const images = {
-  logo: withBase("/images/tiny-touch-and-tastes-logo.jpg"),
-  hero: withBase("/images/weaning-baby.jpg"),
-  founder: withBase("/images/founder-demi.svg"),
+  hero: withBase("/images/hero.svg"),
   babyMassage: withBase("/images/baby-massage.svg"),
-  weaning: withBase("/images/weaning-baby.jpg"),
+  weaning: withBase("/images/weaning-workshop.svg"),
   weaningGallery: [
-    withBase("/images/weaning-first-foods.jpg"),
-    withBase("/images/weaning-family-meal.jpg"),
-    withBase("/images/weaning-batch-cooking.jpg"),
+    withBase("/images/weaning-workshop.svg"),
+    withBase("/images/baby-massage.svg"),
+    withBase("/images/hero.svg"),
   ],
 };
 

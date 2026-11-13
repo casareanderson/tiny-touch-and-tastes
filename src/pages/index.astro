@@ -18,9 +18,6 @@ import { withBase } from "../lib/paths";
           Baby massage and weaning workshops for new parents — warm, calm and
           non-judgmental.
         </p>
-        <a class="founder-link" href={withBase("/about")}>
-          Meet Demi, your instructor <span aria-hidden="true">→</span>
-        </a>
       </div>
 
       <div class="waitlist-card" id="waitlist">
@@ -143,19 +140,10 @@ import { withBase } from "../lib/paths";
     max-width: 32rem;
     font-size: clamp(1.1rem, 2vw, 1.3rem);
   }
-  .founder-link {
-    display: inline-flex;
-    gap: 0.45rem;
-    align-items: center;
-    margin-top: 0.75rem;
-    font-weight: 800;
-  }
-  .founder-link span,
   .offering-link span,
   .taster-link a span {
     transition: transform 0.2s ease;
   }
-  .founder-link:hover span,
   .offering:hover .offering-link span,
   .taster-link a:hover span {
     transform: translateX(4px);

@@ -22,7 +22,7 @@ export async function sendNotification(
 ): Promise<{ sent: boolean; error?: string }> {
   const apiKey = getEnv("RESEND_API_KEY");
   const to = getEnv("CONTACT_EMAIL");
-  const from = getEnv("FROM_EMAIL") ?? "Tiny Touch & Tastes <onboarding@resend.dev>";
+  const from = getEnv("FROM_EMAIL") ?? "Example Classes <onboarding@resend.dev>";
 
   if (!apiKey || !to) {
     console.log(
