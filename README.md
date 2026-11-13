@@ -84,11 +84,11 @@ Local test submissions are not stored permanently.
 To reproduce the base-path build the GitHub workflow uses:
 
 ```sh
-BASE_PATH=/tiny-touch-and-tastes/ PUBLIC_STATIC_DEMO=true npm run build
+BASE_PATH=/astro-class-site/ PUBLIC_STATIC_DEMO=true npm run build
 python3 -m http.server 4322 --directory dist/client
 ```
 
-Then open `http://localhost:4322/tiny-touch-and-tastes/`. Forms in this build show a "Demo only" notice and do not send anything.
+Then open `http://localhost:4322/astro-class-site/`. Forms in this build show a "Demo only" notice and do not send anything.
 
 ## Configuration
 
